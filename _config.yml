@@ -1,18 +1,18 @@
 # Site settings
 title: Hope Blog
 SEOTitle: Hope的博客 | Hope Blog
-header-img: img/post-bg-desk.jpg
+header-img: img/post-bg-debug.png
 email: yuweicong@outlook.com
 description: "Every failure is leading towards success."
 keyword: "Hope Blog, Hope的博客"
-url: "http://qiubaiying.github.io"          # your host, for absolute URL
+url: "http://yuweicong.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/YuWeiCong/yuweicong.github.io.git" # you code repository
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "Goals determine what you going to be!"
-sidebar-avatar: /img/about-BY-gentle.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/avatar_hope.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
@@ -20,7 +20,7 @@ sidebar-avatar: /img/about-BY-gentle.jpg      # use absolute URL, seeing it's us
 RSS: false
 # weibo_username:     qiubaiying
 # zhihu_username:     qiubaiying
-github_username:    yuweicong
+# github_username:    yuweicong
 # facebook_username:  baiying.qiu.7
 # jianshu_username:   e71990ada2fd
 #twitter_username:   qiubaiying
