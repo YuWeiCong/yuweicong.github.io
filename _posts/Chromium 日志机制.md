@@ -1,4 +1,17 @@
-### Chromium 日志机制
+---
+layout:     post
+title:      Chromium 日志机制
+subtitle:   Chromium 日志机制
+date:       2019-12-28
+author:     BY
+header-img: img/post-bg-debug.png
+catalog: true
+tags:
+    - Chromium
+    - LOG
+---
+
+# Chromium 日志机制
 
 ## C++ 层
 在chromium中，提供了多种打日志的宏（下面简称日志宏）。这些日志宏都可以接受一个流的参数。例如
