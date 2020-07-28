@@ -1,0 +1,55 @@
+### Chromium 日志机制
+
+## C++ 层
+在chromium中，提供了多种打日志的宏（下面简称日志宏）。这些日志宏都可以接受一个流的参数。例如
+```
+LOG(INFO) << "Found " << num_cookies << " cookies";
+```
+### 分类
+这些日志宏可以从模式和功能上进行划分。在模式上，可以分为 "debug mode" 或者 "release mode"，这由gn参数的is_debug来进行控制。
+
+#### debug mode 生效的日志宏
+在 debug mode 下生效的日志宏，都是以字母D开头的，比如 DLOG、DLOG_IF、DCHEKC等等。在 "release mode" 下，上述的日志宏是不会被编译进去的。
+```
+DLOG(INFO) << "Found cookies";
+DLOG_IF(INFO, num_cookies > 10) << "Got lots of cookies";
+```
+
+#### release mode 生效的日志宏
+不以字母D开头的日志宏，在 debug mode 和 release mode 下都生效。比如LOG、LOG_IF、CHECK等等。
+
+#### 展开日志宏
+相关宏的定义
+```
+#define LOG(severity) LAZY_STREAM(LOG_STREAM(severity), LOG_IS_ON(severity))
+#define LOG_IS_ON(severity) (::logging::ShouldCreateLogMessage(::logging::LOG_##severity))
+#define LOG_STREAM(severity) COMPACT_GOOGLE_LOG_ ## severity.stream()
+#define COMPACT_GOOGLE_LOG_INFO COMPACT_GOOGLE_LOG_EX_INFO(LogMessage)
+#define COMPACT_GOOGLE_LOG_EX_INFO(ClassName, ...) \
+  ::logging::ClassName(__FILE__, __LINE__, ::logging::LOG_INFO, ##__VA_ARGS__)
+#define LAZY_STREAM(stream, condition) !(condition) ? (void) 0 : ::logging::LogMessageVoidify() & (stream)
+```
+展开 LOG(INFO)
+```
+LOG(INFO) << "this is a info msg";
+(::logging::ShouldCreateLogMessage(::logging::LOG_INFO)) ? (void) 0 : ::logging::LogMessageVoidify() & (::logging::LogMessage(__FILE__, __LINE__, LOG_INFO).stream()) << "this is a info msg";
+```
+- 当 ::logging::ShouldCreateLogMessage(::logging::LOG_INFO) 为 false 时
+```
+LOG(INFO) << "this is a info msg";
+// 当不满足打印日志的条件时，不会进行任何的求值以避免无意义的计算
+// 等同于
+(void) 0 << "this is a info msg";
+```
+- 当 ::logging::ShouldCreateLogMessage(::logging::LOG_INFO) 为 true 时
+```
+LOG(INFO) << "this is a info msg";
+/*
+LogMessage 便是用于打印一条日志的类，其中 LogMessage::stream 方法返回一个类型为 std::ostream 的引用。
+::logging::LogMessageVoidify()& 为了使用 LogMessage::stream 返回来的引用，
+避免编译时产生 "value computed is not used" 或者 "statement has no effect" 的警告
+ */
+// 等同于
+::logging::LogMessageVoidify()&&stream << "this is a info msg";
+```
+其中 LogMessage 的析构函数，会做如下事情：如果定义有日志信息的钩子函数，那么就把日志信息交给钩子函数处理；如果没有，则会根据操作系统平台的不同来选择相应的处理方式。对于Android系统而言，会调用__android_log_write这个Android库函数，将日志以chromium这个tag来写入logcat；此外，如果启用了将日志写入文件的功能的话，也会执行相应的操作。
