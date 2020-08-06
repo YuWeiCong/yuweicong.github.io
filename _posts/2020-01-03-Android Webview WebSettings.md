@@ -26,7 +26,8 @@ android.webkit.WebSettings是Android Webview对外暴露的webview相关属性�
 - WillSuppressErrorState
 - CookiePolicy
 - AllowFileAceess
-### org.chromium.android_webview.AwSettings & AwContentBrowserClient & org.chromium.android_webview.AwSettings.EventHandler
+
+### AwSettings & AwContentBrowserClient & AwSettings.EventHandler
 对WebSettings的属性的设置，全都会调用AwSettings。所以AwContentBrowserClient有点像代理模式中的，那个代理者，封装了一个AwSettings。
 
 由于我们可以在任意的线程对WebSettings进行更改，而AwSettings是JNI的Java端接口，这里会存在一个JNI的多线程调用问题。故封装了一个org.chromium.android_webview.AwSettings.EventHandler，确保AwSettings都是在UI线程中调用相关的JNI接口的。，比如在UI线程中调用updateWebkitPreferencesOnUiThreadLocked方法，来通知android_webivew::AwSettings，WebPreferences已经改变了。
