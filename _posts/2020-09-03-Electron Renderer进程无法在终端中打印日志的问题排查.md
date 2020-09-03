@@ -51,7 +51,7 @@ strace -e trace=write -s 200 -f -p xxx
 
 ## 排查 stderr 无法显示日志
 stdin、stdout、stderr本质上也是一个fd。<br>
-![image](./img/2020-09-03-standard-stream.png)。<br>
+![image](/img/2020-09-03-standard-stream.png)<br>
 如果 stderr 被重定向了文件或者其他地方，那就不会输出到屏幕中了。使用如下linux 命令查看 stderr 的状态。
 ```
 # xxx是 Renderer 进程的 pid
@@ -94,7 +94,7 @@ settings.lock_log = logging::LOCK_LOG_FILE;
 settings.delete_old = logging::DELETE_OLD_LOG_FILE;
 logging::InitLogging(settings);
 ```
-2. 通过SetLogMessageHandler来hook日志的处理，然后使用std::cout把日志打印出来。不过这样会缺少一个内容，比如日志中的时间戳、进程号等等
+2. 通过SetLogMessageHandler来hook日志的处理，然后使用std::cout把日志打印出来。不过这样会缺少关键信息，比如日志中的时间戳、进程号等
 
 # 参考文档
 - [标准流-维基百科](https://zh.wikipedia.org/wiki/%E6%A8%99%E6%BA%96%E4%B8%B2%E6%B5%81#%E6%A8%99%E6%BA%96%E8%BC%B8%E5%85%A5_(stdin)ele)
