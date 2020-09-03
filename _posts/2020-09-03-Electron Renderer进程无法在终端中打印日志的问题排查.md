@@ -1,17 +1,18 @@
 ---
 layout:     post
-title:      Android Webview WebSettings
-date:       2020-01-03
+title:      2020-09-03-Electron Renderer进程无法在终端中打印日志的问题排查
+date:       2020-09-03
 author:     Hope
 header-img: img/post-bg-debug.png
 catalog: true
 tags:
+    - Electron
     - Chromium
-    - Android Webview
+    - LOG
 ---
 # 结论
 1. 要打印Browser 进程日志时，需添加 `--enable-logging` 命令行参数
-2. 要打印Renderer 进程日志时，需添加 `--enable-logging` 和 `--enable-sandbox` （）参数
+2. 要打印Renderer 进程日志时，需添加 `--enable-logging` 和 `--enable-sandbox` （或者在electron app中调用[app.enableSandbox()](https://github.com/electron/electron/blob/master/docs/api/sandbox-option.md)方法）
 
 
 # 背景
@@ -50,7 +51,7 @@ strace -e trace=write -s 200 -f -p xxx
 
 ## 排查 stderr 无法显示日志
 stdin、stdout、stderr本质上也是一个fd。<br>
-![image](99FAB623598A4046A3FAB35F17FFEE95)。
+![image](./img/2020-09-03-standard-stream.png)。<br>
 如果 stderr 被重定向了文件或者其他地方，那就不会输出到屏幕中了。使用如下linux 命令查看 stderr 的状态。
 ```
 # xxx是 Renderer 进程的 pid
