@@ -123,6 +123,7 @@ int main(int argc, char const* argv[]) {
 }
 ```
 ## 参考文档
+- [demo_partition_alloc.cc](https://github.com/YuWeiCong/chromium_demo/blob/master/memory/demo_partition_alloc.cc)
 - [Blink内存分配器](https://blog.csdn.net/woweiwokuang0000/article/details/50859029)
 - [PartitionAlloc Design](https://chromium.googlesource.com/chromium/src/+/master/base/allocator/partition_allocator/PartitionAlloc.md)
-- [partition_alloc.h](https://source.chromium.org/chromium/chromium/src/+/master:base/allocator/partition_allocator/partition_alloc.h)rg/wiki/%E6%A8%99%E6%BA%96%E4%B8%B2%E6%B5%81#%E6%A8%99%E6%BA%96%E8%BC%B8%E5%85%A5_(stdin)ele)
+- [partition_alloc.h](https://source.chromium.org/chromium/chromium/src/+/master:base/allocator/partition_allocator/partition_alloc.h)
