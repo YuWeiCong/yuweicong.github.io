@@ -3,7 +3,7 @@ layout:     post
 title:      Electron Renderer进程无法在终端中打印日志的问题排查
 date:       2020-09-03
 author:     Hope
-header-img: img/post-bg-debug.png
+header-img: img/google-chrome-logo.jpg
 catalog: true
 tags:
     - Electron

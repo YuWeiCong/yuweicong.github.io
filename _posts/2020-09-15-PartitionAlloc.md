@@ -3,7 +3,7 @@ layout:     post
 title:      PartitionAlloc
 date:       2020-09-15
 author:     Hope
-header-img: img/post-bg-debug.png
+header-img: img/google-chrome-logo.jpg
 catalog: true
 tags:
     - Chromium
@@ -22,7 +22,7 @@ tags:
 - 在单线程中，支持无锁操作。在多线程中，使用高效的自旋锁来进行同步
 
 ## PartitionRoot 和 PartitionRootGeneric
-`PartitionAlloc`有两种实现，分别是`PartitionRoot`和`PartitionRootGeneric`，但是我们不会直接使用`PartitionRoot`和`PartitionRootGeneric`，而是使用相对应的`SizeSpecificPartitionAllocator<size>`和`PartitionAllocatorGeneric`。因为`SizeSpecificPartitionAllocator<size>`和`PartitionAllocatorGeneric`还通过`PartitionAllocMomeryRelaimer`来进行内存的回收。下面列出这两种实现的特点。
+`PartitionAlloc`有两种实现，分别是`PartitionRoot`和`PartitionRootGeneric`，但是我们不会直接使用`PartitionRoot`和`PartitionRootGeneric`，而是使用相对应的`SizeSpecificPartitionAllocator<size>`和`PartitionAllocatorGeneric`。因为`SizeSpecificPartitionAllocator<size>`和`PartitionAllocatorGeneric`还通过`PartitionAllocMemoryReclaimer`来进行内存的回收。下面列出这两种实现的特点。
 ### PartitionRoot
 - Allocation和Free 一个`Partition`必须要在同一个线程（不支持多线程，所以不需要锁，速度快）
 - `PartitionRoot`在`init()`时，需指定一个最大值MAX_SIZE，后序在该`PartitionRoot`上申请的空间，都应该小于该对象的MAX_SIZE，否则会申请失败
@@ -41,7 +41,7 @@ Blink中的内存分配只推荐使用`PartitiionAlloc`或者`OilPan`。其中�
 * FastMalloc partition：主要分配除其他三种类型之外的比如被标记为USING_FAST_MALLOC的类对象，Blink中大量功能逻辑的内部对象都归于此分区
 
 通过使用宏`USE_ALLOCATOR`来重写类中的`operator new`、`operator delete`、`operator new[]`、`operator delete[]`等方法来使用`PartitionAlloc`相对应的方法。
-```C++
+``` C++
 #define USE_ALLOCATOR(ClassName, Allocator)                       \
  public:                                                          \
   void* operator new(size_t size) {                               \
@@ -64,7 +64,7 @@ Blink中的内存分配只推荐使用`PartitiionAlloc`或者`OilPan`。其中�
 ```
 
 ## 使用示例
-```
+``` C++
 #include <string.h>
 
 #include "base/allocator/partition_allocator/partition_alloc.h"

@@ -3,7 +3,7 @@ layout:     post
 title:      Chromium Threading and Task
 date:       2020-01-10
 author:     Hope
-header-img: img/post-bg-debug.png
+header-img: img/google-chrome-logo.jpg
 catalog: true
 tags:
     - Chromium

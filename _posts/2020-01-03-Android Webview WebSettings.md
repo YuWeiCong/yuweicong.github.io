@@ -3,7 +3,7 @@ layout:     post
 title:      Android Webview WebSettings
 date:       2020-01-03
 author:     Hope
-header-img: img/post-bg-debug.png
+header-img: img/google-chrome-logo.jpg
 catalog: true
 tags:
     - Chromium
